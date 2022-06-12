@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"github.com/LuisEduardo-M/Go_Web/pkg/config"
+	"github.com/LuisEduardo-M/Go_Web/pkg/models"
 	"github.com/LuisEduardo-M/Go_Web/pkg/render"
 	"net/http"
 )
@@ -28,10 +29,15 @@ func NewHandlers(r *Repository) {
 
 // Home is the home page handler
 func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
-	render.RenderTemplate(w, "home.tmpl.html")
+	render.RenderTemplate(w, "home.tmpl.html", &models.TemplateData{})
 }
 
 // About is the about page handler
 func (m *Repository) About(w http.ResponseWriter, r *http.Request) {
-	render.RenderTemplate(w, "about.tmpl.html")
+	stringMap := make(map[string]string)
+	stringMap["test"] = "Hello, again..."
+
+	render.RenderTemplate(w, "about.tmpl.html", &models.TemplateData{
+		StringMap: stringMap,
+	})
 }
