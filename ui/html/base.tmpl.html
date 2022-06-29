@@ -1,26 +1,33 @@
 {{define "base"}}
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./../static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./../static/main.css">
     <title>{{template "title" .}} - Game Manager</title>
 </head>
+
 <body>
-    <header>
-        <h1><a href="/">Game Manager</a></h1>
-    </header>
+    <div class="container">
+            <header>
+                <h1><a class="center display-3 fw-bold" href="/">Game Manager</a></h1>
+            </header>
+            
+        {{template "nav" .}}
 
-    {{template "nav" .}}
+        <main>
+            {{template "main" .}}
+        </main>
 
-    <main>
-        {{template "main" .}}
-    </main>
+        <footer class="center">
+            Made by&nbsp<a href="https://github.com/LuisEduardo-M">Luis Eduardo M.</a>
+        </footer>
+    </div>
 
-    <footer>
-        Made by <a href="https://github.com/LuisEduardo-M">Luis Eduardo M.</a>
-    </footer>
-    
 </body>
+
 </html>
 {{end}}
