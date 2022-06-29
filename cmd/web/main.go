@@ -15,6 +15,7 @@ type application struct {
 
 func main() {
 	addr := flag.String("addr", ":4000", "HTTP network address")
+
 	flag.Parse()
 
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
@@ -25,24 +26,13 @@ func main() {
 		infoLog:  infoLog,
 	}
 
-	mux := http.NewServeMux()
-
-	fileServer := http.FileServer(http.Dir("./ui/static/"))
-	/* register the file server as the handler for all URL paths
-	that starts with "/static" */
-	mux.Handle("/static/", http.StripPrefix("/static", fileServer))
-
-	mux.HandleFunc("/", app.home)
-	mux.HandleFunc("/game/view", app.gameView)
-	mux.HandleFunc("/game/add", app.gameAdd)
-
 	srv := &http.Server{
 		Addr:     *addr,
 		ErrorLog: errorLog,
-		Handler:  mux,
+		Handler:  app.routes(),
 	}
 
-	infoLog.Printf("Starting server on http://localhost%s", *addr)
+	infoLog.Printf("Starting server on %s", *addr)
 	err := srv.ListenAndServe()
 	errorLog.Fatal(err)
 }
