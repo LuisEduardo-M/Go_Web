@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"html/template"
+	"github.com/LuisEduardo-M/Go_Web/internal/models"
 	"net/http"
 	"strconv"
 )
@@ -13,22 +13,16 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	files := []string{
-		"./ui/html/base.tmpl.html",
-		"./ui/html/pages/home.tmpl.html",
-		"./ui/html/partials/nav.tmpl.html",
-	}
-
-	ts, err := template.ParseFiles(files...)
+	games, err := app.games.GetAll()
 	if err != nil {
 		app.serverError(w, err)
 		return
 	}
 
-	err = ts.ExecuteTemplate(w, "base", nil)
-	if err != nil {
-		app.serverError(w, err)
+	for _, game := range games {
+		fmt.Fprintf(w, "%+v\n", game)
 	}
+
 }
 
 func (app *application) gameView(w http.ResponseWriter, r *http.Request) {
@@ -37,7 +31,18 @@ func (app *application) gameView(w http.ResponseWriter, r *http.Request) {
 		app.notFound(w)
 		return
 	}
-	fmt.Fprintf(w, "Display a specific game with ID %d.", id)
+
+	game, err := app.games.Get(id)
+	if err != nil {
+		if err == models.ErrNoRecord {
+			app.notFound(w)
+		} else {
+			app.serverError(w, err)
+		}
+		return
+	}
+
+	fmt.Fprintf(w, "%+v", game)
 }
 
 func (app *application) gameAdd(w http.ResponseWriter, r *http.Request) {
@@ -46,5 +51,16 @@ func (app *application) gameAdd(w http.ResponseWriter, r *http.Request) {
 		app.clientError(w, http.StatusMethodNotAllowed)
 		return
 	}
-	w.Write([]byte("Add new game..."))
+
+	title := "Valorant"
+	description := "Valorant is a free-to-play, team-based, competitive game."
+	categories := "FPS, Action, Multiplayer"
+
+	id, err := app.games.Insert(title, description, categories)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	http.Redirect(w, r, fmt.Sprintf("/game?id=%d", id), http.StatusSeeOther)
 }
