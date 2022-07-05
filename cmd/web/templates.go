@@ -9,8 +9,9 @@ import (
 
 // templateData type holds structure for any dynamic data that needs to be passed to a HTML template.
 type templateData struct {
-	Game  *models.Game
-	Games []*models.Game
+	CurrentYear int
+	Game        *models.Game
+	Games       []*models.Game
 }
 
 func newTemplateCache() (map[string]*template.Template, error) {

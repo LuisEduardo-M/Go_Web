@@ -20,9 +20,10 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	app.render(w, http.StatusOK, "home.tmpl.html", &templateData{
-		Games: games,
-	})
+	data := app.newTemplateData(r)
+	data.Games = games
+
+	app.render(w, http.StatusOK, "home.tmpl.html", data)
 
 }
 
@@ -43,9 +44,10 @@ func (app *application) gameView(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	app.render(w, http.StatusOK, "view.tmpl.html", &templateData{
-		Game: game,
-	})
+	data := app.newTemplateData(r)
+	data.Game = game
+
+	app.render(w, http.StatusOK, "view.tmpl.html", data)
 
 }
 
