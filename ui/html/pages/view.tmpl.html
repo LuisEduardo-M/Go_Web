@@ -1,0 +1,19 @@
+{{define "title"}} Game #{{.ID}}{{end}}
+
+{{define "main"}}
+<div>
+    <div>
+        <strong>{{.Title}}</strong>
+        <span>#{{.ID}}</span>
+    </div>
+
+    <pre><code>{{.Description}}</code></pre>
+
+    <div>
+        <ul>
+            <li>{{.Categories}}</li>
+        </ul>
+    </div>
+
+</div>
+{{end}}

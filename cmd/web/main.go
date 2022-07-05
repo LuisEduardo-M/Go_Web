@@ -3,19 +3,22 @@ package main
 import (
 	"database/sql"
 	"flag"
-	"github.com/LuisEduardo-M/Go_Web/internal/models"
 	"log"
 	"net/http"
 	"os"
+	"text/template"
+
+	"github.com/LuisEduardo-M/Go_Web/internal/models"
 
 	_ "github.com/go-sql-driver/mysql"
 )
 
 // Application struct to hold application-wide dependencies
 type application struct {
-	infoLog  *log.Logger
-	errorLog *log.Logger
-	games    *models.GameModel
+	infoLog       *log.Logger
+	errorLog      *log.Logger
+	games         *models.GameModel
+	templateCache map[string]*template.Template
 }
 
 func main() {
@@ -35,10 +38,16 @@ func main() {
 
 	defer db.Close()
 
+	templateCache, err := newTemplateCache()
+	if err != nil {
+		errorLog.Fatal(err)
+	}
+
 	app := &application{
-		errorLog: errorLog,
-		infoLog:  infoLog,
-		games:    &models.GameModel{DB: db},
+		errorLog:      errorLog,
+		infoLog:       infoLog,
+		games:         &models.GameModel{DB: db},
+		templateCache: templateCache,
 	}
 
 	srv := &http.Server{
