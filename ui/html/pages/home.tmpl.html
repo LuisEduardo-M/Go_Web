@@ -1,8 +1,26 @@
 {{define "title"}}Home{{end}}
 
 {{define "main"}}
-<main>
-    <h2>New Games!</h2>
-    <p>Nothing new yet!</p>
-</main>
+<h2>All Games</h2>
+{{if .Games}}
+<table>
+    <tr>
+        <th>Title</th>
+        <th>ID</th>
+        <th>Categories</th>
+    </tr>
+
+    {{range .Games}}
+    <tr>
+        <td><a href="/game/view?id={{.ID}}">{{.Title}}</a></td>
+        <td>{{.Categories}}</td>
+        <td>{{.ID}}</td>
+    </tr>
+    {{end}}
+</table>
+{{else}}
+<p>No games found.</p>
+{{end}}
+
+
 {{end}}

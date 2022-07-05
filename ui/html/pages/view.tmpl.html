@@ -1,17 +1,17 @@
-{{define "title"}} Game #{{.ID}}{{end}}
+{{define "title"}} Game #{{.Game.ID}}{{end}}
 
 {{define "main"}}
-<div>
-    <div>
-        <strong>{{.Title}}</strong>
-        <span>#{{.ID}}</span>
+<div class="game">
+    <div class="metadata">
+        <strong>{{.Game.Title}}</strong>
+        <span>#{{.Game.ID}}</span>
     </div>
 
-    <pre><code>{{.Description}}</code></pre>
+    <pre><code>{{.Game.Description}}</code></pre>
 
     <div>
         <ul>
-            <li>{{.Categories}}</li>
+            <li>{{.Game.Categories}}</li>
         </ul>
     </div>
 
