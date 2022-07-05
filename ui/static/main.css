@@ -3,6 +3,19 @@
     justify-content: center;
 }
 
+.game {
+    background-color: #FFFFFF;
+    border: 1px solid #E4E5E7;
+    border-radius: 3px;
+}
+
+.game .metadata {
+    background-color: #F7F9FA;
+    color: #6A6C6F;
+    padding: 0.75em 18px;
+    overflow: auto;
+}
+
 * {
     margin: 0;
     padding: 0;
