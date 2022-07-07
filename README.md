@@ -4,6 +4,7 @@ Go Web Application
 ## Packages
 - <a href="https://github.com/go-sql-driver/mysql">MySQl Database</a> 
 - <a href="https://github.com/justinas/alice">Alice Middleware</a> 
+- <a href="https://github.com/julienschmidt/httprouter">HttpRouter</a>
 
 ## Folder Structure
 The cmd directory will contain the application-specific code for the executable applications in the project.
