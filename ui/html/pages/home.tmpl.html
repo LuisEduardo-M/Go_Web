@@ -5,16 +5,16 @@
 {{if .Games}}
 <table>
     <tr>
-        <th>Title</th>
         <th>ID</th>
+        <th>Title</th>
         <th>Categories</th>
     </tr>
 
     {{range .Games}}
     <tr>
+        <td>{{.ID}}</td>
         <td><a href="/game/view/{{.ID}}">{{.Title}}</a></td>
         <td>{{.Categories}}</td>
-        <td>{{.ID}}</td>
     </tr>
     {{end}}
 </table>

@@ -1,0 +1,26 @@
+{{define "title"}}Add a New Game{{end}}
+
+{{define "main"}}
+<form action="/game/add" method="POST">
+    <div>
+        <label>Title:</label>
+        <label></label>
+        <input type="text" name="title">
+    </div>
+
+    <div>
+        <label>Description:</label>
+        <textarea name="description"></textarea>
+    </div>
+
+    <div>
+        <label>Categories:</label>
+        <input type="text" name="categories">
+    </div>
+
+    <div>
+        <input type="submit" value="Add Game">
+    </div>
+
+</form>
+{{end}}

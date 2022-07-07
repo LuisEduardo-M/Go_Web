@@ -12,6 +12,7 @@ type templateData struct {
 	CurrentYear int
 	Game        *models.Game
 	Games       []*models.Game
+	Form        any
 }
 
 func newTemplateCache() (map[string]*template.Template, error) {

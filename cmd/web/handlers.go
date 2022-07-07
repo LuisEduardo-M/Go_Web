@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/LuisEduardo-M/Go_Web/internal/models"
 	"github.com/julienschmidt/httprouter"
@@ -50,15 +51,52 @@ func (app *application) gameView(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) gameAdd(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Display a form to create a new game"))
+	data := app.newTemplateData(r)
+
+	app.render(w, http.StatusOK, "add.tmpl.html", data)
+}
+
+type gameAddForm struct {
+	Title       string
+	Description string
+	Categories  string
+	FieldErrors map[string]string
 }
 
 func (app *application) gameAddPost(w http.ResponseWriter, r *http.Request) {
-	title := "Valorant"
-	description := "Valorant is a free-to-play, team-based, competitive game."
-	categories := "FPS, Action, Multiplayer"
+	err := r.ParseForm()
+	if err != nil {
+		app.clientError(w, http.StatusBadRequest)
+		return
+	}
 
-	id, err := app.games.Insert(title, description, categories)
+	form := gameAddForm{
+		Title:       r.PostForm.Get("title"),
+		Description: r.PostForm.Get("description"),
+		Categories:  r.PostForm.Get("categories"),
+		FieldErrors: map[string]string{},
+	}
+
+	if strings.TrimSpace(form.Title) == "" {
+		form.FieldErrors["title"] = "Title is required"
+	} else if len(form.Title) > 120 {
+		form.FieldErrors["title"] = "Title must be less than 120 characters"
+	}
+	if strings.TrimSpace(form.Description) == "" {
+		form.FieldErrors["description"] = "Description is required"
+	}
+	if strings.TrimSpace(form.Categories) == "" {
+		form.FieldErrors["categories"] = "Categories is required"
+	}
+
+	if len(form.FieldErrors) > 0 {
+		data := app.newTemplateData(r)
+		data.Form = form
+		app.render(w, http.StatusUnprocessableEntity, "add.tmpl.html", data)
+		return
+	}
+
+	id, err := app.games.Insert(form.Title, form.Description, form.Categories)
 	if err != nil {
 		app.serverError(w, err)
 		return
