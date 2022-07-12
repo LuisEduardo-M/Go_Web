@@ -3,10 +3,13 @@ package main
 import (
 	"database/sql"
 	"flag"
+	"github.com/alexedwards/scs/mysqlstore"
+	"github.com/alexedwards/scs/v2"
 	"log"
 	"net/http"
 	"os"
 	"text/template"
+	"time"
 
 	"github.com/LuisEduardo-M/Go_Web/internal/models"
 
@@ -15,10 +18,11 @@ import (
 
 // Application struct to hold application-wide dependencies
 type application struct {
-	infoLog       *log.Logger
-	errorLog      *log.Logger
-	games         *models.GameModel
-	templateCache map[string]*template.Template
+	infoLog        *log.Logger
+	errorLog       *log.Logger
+	games          *models.GameModel
+	templateCache  map[string]*template.Template
+	sessionManager *scs.SessionManager
 }
 
 func main() {
@@ -43,11 +47,16 @@ func main() {
 		errorLog.Fatal(err)
 	}
 
+	sessionManager := scs.New()
+	sessionManager.Store = mysqlstore.New(db)
+	sessionManager.Lifetime = 12 * time.Hour
+
 	app := &application{
-		errorLog:      errorLog,
-		infoLog:       infoLog,
-		games:         &models.GameModel{DB: db},
-		templateCache: templateCache,
+		errorLog:       errorLog,
+		infoLog:        infoLog,
+		games:          &models.GameModel{DB: db},
+		templateCache:  templateCache,
+		sessionManager: sessionManager,
 	}
 
 	srv := &http.Server{

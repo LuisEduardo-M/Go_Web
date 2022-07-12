@@ -13,6 +13,7 @@ type templateData struct {
 	Game        *models.Game
 	Games       []*models.Game
 	Form        any
+	Flash       string
 }
 
 func newTemplateCache() (map[string]*template.Template, error) {

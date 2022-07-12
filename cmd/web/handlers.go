@@ -102,5 +102,7 @@ func (app *application) gameAddPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	app.sessionManager.Put(r.Context(), "flash", "Game successfully added")
+
 	http.Redirect(w, r, fmt.Sprintf("/game/view/%d", id), http.StatusSeeOther)
 }

@@ -31,6 +31,9 @@
                     <div class="col-md-10">
             
                         <main>
+                            {{with .Flash}}
+                            <div>{{.}}</div>
+                            {{end}}
                             {{template "main" .}}
                         </main>
                     </div>
